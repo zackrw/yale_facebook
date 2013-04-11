@@ -3,8 +3,10 @@ require 'mechanize'
 
 class YaleFacebook
 
-  def initialize(netid, password)
-    @browser = make_cas_browser(netid, password)
+  attr_accessor :browser
+
+  def initialize(netid, password, opts={})
+    @browser = make_cas_browser(netid, password, opts)
     @browser.get('https://students.yale.edu/facebook/PhotoPage')
     @browser.get('https://students.yale.edu/facebook/ChangeCollege?newOrg=Yale%20College')
   end
@@ -19,8 +21,11 @@ HERE
     @browser.page.parser.css('.student-container')
   end
 
-  def make_cas_browser(netid, password)
-    browser = Mechanize.new
+  def make_cas_browser(netid, password, opts)
+    browser = Mechanize.new do |b|
+      b.ca_file = opts[:ca_file] if opts[:ca_file]
+    end
+
     browser.get('https://secure.its.yale.edu/cas/login')
     form = browser.page.forms.first
     form.username = netid
