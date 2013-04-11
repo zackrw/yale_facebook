@@ -19,12 +19,6 @@ HERE
     @browser.page.parser.css('.student-container')
   end
 
-  search("searchString", opts):
-      returns an array of yalies
-      opts could be :order => :lastname or :limit => 12 or :college => :trumbull or something
-
-
-
   def make_cas_browser(netid, password)
     browser = Mechanize.new
     browser.get('https://secure.its.yale.edu/cas/login')
